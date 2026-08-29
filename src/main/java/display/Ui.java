@@ -1,6 +1,7 @@
 package display;
 
 import java.util.Scanner;
+import list.TaskList;
 
 public class Ui {
     private static final String DIVIDER = "____________________________________________________________";
@@ -38,6 +39,21 @@ public class Ui {
     public void displayGoodbye() {
         displayLine();
         System.out.println("Bye. Happy to be of service!");
+        displayLine();
+    }
+
+    public void displayAdd(String task) {
+        displayLine();
+        System.out.println("added: " + task);
+        displayLine();
+    }
+
+    public void displayList(TaskList list) {
+        displayLine();
+        for (int i = 0; i < list.size(); i++) {
+            System.out.print("[" + (i + 1) + "] ");
+            System.out.println(list.getItem(i));
+        }
         displayLine();
     }
 
