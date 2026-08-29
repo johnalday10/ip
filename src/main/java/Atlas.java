@@ -1,5 +1,6 @@
 import display.Ui;
 import list.TaskList;
+import task.Task;
 
 public class Atlas {
     private final Ui ui;
@@ -9,6 +10,15 @@ public class Atlas {
         this.ui = new Ui();
         this.list = new TaskList();
     }
+
+    public Task parseInput(String input) {
+        String[] parts = input.split(" ", 2);
+        int taskIdx = Integer.parseInt(parts[1]) - 1;
+        Task task = list.getItem(taskIdx);
+
+        return task;
+    }
+
     public void run() {
         ui.displayLine();
         ui.showWelcomeBanner();
@@ -17,15 +27,31 @@ public class Atlas {
         boolean isExit = false;
         while (!isExit) {
             String input = ui.readInput();
+            // Task task = new Task(input);
 
             if (input.equalsIgnoreCase("bye")) {
                 isExit = true;
                 ui.displayGoodbye();
             } else if (input.equalsIgnoreCase("list")) {
                 ui.displayList(list);
+            } else if (input.startsWith("mark")) {
+                // String[] parts = input.split(" ", 2);
+                // int taskIdx = Integer.parseInt(parts[1]) - 1;
+                // Task task = list.getItem(taskIdx);
+                Task task = parseInput(input);
+                task.markAsDone();
+                ui.displayTaskMarked(task);
+            } else if (input.startsWith("unmark")) {
+                // String[] parts = input.split(" ", 2);
+                // int taskIdx = Integer.parseInt(parts[1]) - 1;
+                // Task task = list.getItem(taskIdx);
+                Task task = parseInput(input);
+                task.markAsNotDone();
+                ui.displayTaskUnmarked(task);
             } else {
                 // ui.displayEcho(input);
-                list.add(input);
+                Task task = new Task(input);
+                list.add(task);
                 ui.displayAdd(input);
             }
         }

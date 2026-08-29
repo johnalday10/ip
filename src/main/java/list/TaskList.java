@@ -2,15 +2,16 @@ package list;
 
 import java.util.ArrayList;
 import java.util.List;
+import task.Task;
 
 public class TaskList {
-    private final List<String> tasks;
+    private final List<Task> tasks;
 
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
-    public void add(String task) {
+    public void add(Task task) {
         tasks.add(task);
     }
 
@@ -18,11 +19,11 @@ public class TaskList {
         return tasks.size();
     }
 
-    public String getItem(int idx) {
+    public Task getItem(int idx) {
         return tasks.get(idx);
     }
 
-    public List<String> getList() {
+    public List<Task> getList() {
         return tasks;
     }
 }
