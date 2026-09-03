@@ -3,6 +3,9 @@ package display;
 import java.util.Scanner;
 import list.TaskList;
 import task.Task;
+import task.Todo;
+import task.Deadline;
+import task.Event;
 
     public class Ui {
     private static final String DIVIDER = "____________________________________________________________";
@@ -43,9 +46,12 @@ import task.Task;
         displayLine();
     }
 
-    public void displayAdd(String task) {
+    public void displayAdd(Task task, TaskList list) {
         displayLine();
-        System.out.println("added: " + task);
+        System.out.println("Added task:");
+        System.out.println(task);
+        String sizeReturn = list.size() > 1 ? "There are " + list.size() + " items in the list" : "There is " + list.size() + " item in the list";
+        System.out.println(sizeReturn);
         displayLine();
     }
 

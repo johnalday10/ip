@@ -1,6 +1,7 @@
 import display.Ui;
 import list.TaskList;
 import task.Task;
+import parser.Parser;
 
 public class Atlas {
     private final Ui ui;
@@ -9,14 +10,6 @@ public class Atlas {
     public Atlas() {
         this.ui = new Ui();
         this.list = new TaskList();
-    }
-
-    public Task parseInput(String input) {
-        String[] parts = input.split(" ", 2);
-        int taskIdx = Integer.parseInt(parts[1]) - 1;
-        Task task = list.getItem(taskIdx);
-
-        return task;
     }
 
     public void run() {
@@ -34,17 +27,23 @@ public class Atlas {
             } else if (input.equalsIgnoreCase("list")) {
                 ui.displayList(list);
             } else if (input.startsWith("mark")) {
-                Task task = parseInput(input);
+                int index = Parser.parseIndex(input);
+                Task task = list.getItem(index);
                 task.markAsDone();
                 ui.displayTaskMarked(task);
             } else if (input.startsWith("unmark")) {
-                Task task = parseInput(input);
+                int index = Parser.parseIndex(input);
+                Task task = list.getItem(index);
                 task.markAsNotDone();
                 ui.displayTaskUnmarked(task);
             } else {
-                Task task = new Task(input);
-                list.add(task);
-                ui.displayAdd(input);
+                Task task = Parser.parseTask(input);
+                if (task != null) {
+                    list.add(task);
+                    ui.displayAdd(task, list);
+                } else {
+                    System.out.println("Invalid input, please try again.");
+                }
             }
         }
     }
