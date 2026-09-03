@@ -4,20 +4,20 @@ import java.util.Scanner;
 import list.TaskList;
 import task.Task;
 
-public class Ui {
+    public class Ui {
     private static final String DIVIDER = "____________________________________________________________";
     private final Scanner scanner;
+    private static final String banner = "  ___  _____ _        _    ____  \n"
+        + " / _ \\|_   _| |      / \\  / ___| \n"
+        + "| |_| | | | | |     / _ \\ \\___ \\ \n"
+        + "|  _  | | | | |___ / ___ \\ ___) |\n"
+        + "|_| |_| |_| |_____/_/   \\_\\____/ \n";
 
     public Ui() {
         this.scanner = new Scanner(System.in);
     }
 
-    public void showWelcomeBanner() {
-        String banner = "  ___  _____ _        _    ____  \n"
-                + " / _ \\|_   _| |      / \\  / ___| \n"
-                + "| |_| | | | | |     / _ \\ \\___ \\ \n"
-                + "|  _  | | | | |___ / ___ \\ ___) |\n"
-                + "|_| |_| |_| |_____/_/   \\_\\____/ \n";
+    public void displayWelcomeBanner() {
         System.out.println(banner);
         System.out.println("Hello! I'm Atlas.");
         System.out.println("What can I do for you?");

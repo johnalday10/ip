@@ -21,13 +21,12 @@ public class Atlas {
 
     public void run() {
         ui.displayLine();
-        ui.showWelcomeBanner();
+        ui.displayWelcomeBanner();
         ui.displayLine();
 
         boolean isExit = false;
         while (!isExit) {
             String input = ui.readInput();
-            // Task task = new Task(input);
 
             if (input.equalsIgnoreCase("bye")) {
                 isExit = true;
@@ -35,16 +34,10 @@ public class Atlas {
             } else if (input.equalsIgnoreCase("list")) {
                 ui.displayList(list);
             } else if (input.startsWith("mark")) {
-                // String[] parts = input.split(" ", 2);
-                // int taskIdx = Integer.parseInt(parts[1]) - 1;
-                // Task task = list.getItem(taskIdx);
                 Task task = parseInput(input);
                 task.markAsDone();
                 ui.displayTaskMarked(task);
             } else if (input.startsWith("unmark")) {
-                // String[] parts = input.split(" ", 2);
-                // int taskIdx = Integer.parseInt(parts[1]) - 1;
-                // Task task = list.getItem(taskIdx);
                 Task task = parseInput(input);
                 task.markAsNotDone();
                 ui.displayTaskUnmarked(task);
