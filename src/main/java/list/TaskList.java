@@ -22,8 +22,4 @@ public class TaskList {
     public Task getItem(int index) {
         return tasks.get(index);
     }
-
-    public List<Task> getList() {
-        return tasks;
-    }
 }

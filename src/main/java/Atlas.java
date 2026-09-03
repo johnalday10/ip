@@ -42,7 +42,6 @@ public class Atlas {
                 task.markAsNotDone();
                 ui.displayTaskUnmarked(task);
             } else {
-                // ui.displayEcho(input);
                 Task task = new Task(input);
                 list.add(task);
                 ui.displayAdd(input);
