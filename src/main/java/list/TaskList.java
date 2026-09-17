@@ -3,6 +3,7 @@ package list;
 import java.util.ArrayList;
 import java.util.List;
 import task.Task;
+import exception.AtlasException;
 
 public class TaskList {
     private final List<Task> tasks;
@@ -19,7 +20,7 @@ public class TaskList {
         return tasks.size();
     }
 
-    public Task getItem(int index) {
+    public Task getItem(int index){
         return tasks.get(index);
     }
 }
