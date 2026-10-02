@@ -1,6 +1,5 @@
 package storage;
 
-import exception.AtlasException;
 import list.TaskList;
 import task.Deadline;
 import task.Event;
@@ -11,6 +10,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -71,14 +72,26 @@ public class Storage {
     }
 
     private Task createTaskFromType(String type, String description, String[] parts) {
-        switch (type) {
-        case TYPE_TODO:
-            return new Todo(description);
-        case TYPE_DEADLINE:
-            return parts.length >= 4 ? new Deadline(description, parts[3].trim()) : null;
-        case TYPE_EVENT:
-            return parts.length >= 5 ? new Event(description, parts[3].trim(), parts[4].trim()) : null;
-        default:
+        try {
+            switch (type) {
+            case TYPE_TODO:
+                return new Todo(description);
+            case TYPE_DEADLINE:
+                if (parts.length < 4) {
+                    return null;
+                }
+                return new Deadline(description, LocalDate.parse(parts[3].trim()));
+            case TYPE_EVENT:
+                if (parts.length < 5) {
+                    return null;
+                }
+                return new Event(description,
+                        LocalDate.parse(parts[3].trim()),
+                        LocalDate.parse(parts[4].trim()));
+            default:
+                return null;
+            }
+        } catch (DateTimeParseException e) {
             return null;
         }
     }

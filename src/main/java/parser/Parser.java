@@ -11,6 +11,9 @@ import task.Deadline;
 import task.Event;
 import task.Todo;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 public class Parser {
     private static final String BY_FLAG = " /by";
     private static final String FROM_FLAG = " /from";
@@ -53,21 +56,30 @@ public class Parser {
 
     private static Deadline createDeadline(String args) throws AtlasException {
         String[] parts = splitArguments(args, BY_FLAG,
-                "Invalid DEADLINE: Input requires description and start time");
-        return new Deadline(parts[0].trim(), parts[1].trim());
+                "Invalid DEADLINE: Input requires description and deadline date");
+        LocalDate date = parseDate(parts[1].trim());
+        return new Deadline(parts[0].trim(), date);
     }
 
     private static Event createEvent(String args) throws AtlasException {
         String[] fromParts = splitArguments(args, FROM_FLAG,
-                "Invalid EVENT: Input requires description and start time");
+                "Invalid EVENT: Input requires description and start date");
         String description = fromParts[0].trim();
 
         String[] toParts = splitArguments(fromParts[1], TO_FLAG,
-                "Invalid EVENT: Input requires start and end time");
-        String from = toParts[0].trim();
-        String to = toParts[1].trim();
+                "Invalid EVENT: Input requires start and end dates");
+        LocalDate from = parseDate(toParts[0].trim());
+        LocalDate to = parseDate(toParts[1].trim());
 
         return new Event(description, from, to);
+    }
+
+    private static LocalDate parseDate(String dateString) throws AtlasException {
+        try {
+            return LocalDate.parse(dateString);
+        } catch (DateTimeParseException e) {
+            throw new AtlasException("Invalid date format: Please use yyyy-mm-dd (e.g., 2026-10-15)");
+        }
     }
 
     private static String[] splitArguments(String text, String delimiter, String errorMessage)
