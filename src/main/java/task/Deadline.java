@@ -9,11 +9,16 @@ public class Deadline extends Task {
     }
 
     public String getDate() {
-        return date;
+        return this.date;
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + date + ")";
+        return "[D]" + super.toString() + " (by: " + this.date + ")";
+    }
+
+    @Override
+    public String toFileFormat() {
+        return "D | " + (getIsDone() ? "1" : "0") + " | " + getDescription() + " | " + this.date;
     }
 }

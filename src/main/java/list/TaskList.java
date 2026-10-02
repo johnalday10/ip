@@ -3,13 +3,16 @@ package list;
 import java.util.ArrayList;
 import java.util.List;
 import task.Task;
-import exception.AtlasException;
 
 public class TaskList {
     private final List<Task> tasks;
 
     public TaskList() {
         this.tasks = new ArrayList<>();
+    }
+
+    public TaskList(ArrayList<Task> initialTasks) {
+        this.tasks = initialTasks;
     }
 
     public void add(Task task) {
