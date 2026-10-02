@@ -37,6 +37,10 @@ public class Atlas {
                     Task task = list.getItem(index);
                     task.markAsNotDone();
                     ui.displayTaskUnmarked(task);
+                } else if (input.equals("delete") || input.startsWith("delete ")) {
+                    int index = Parser.parseIndex(input);
+                    Task task = list.remove(index);
+                    ui.displayTaskDeleted(task, list);
                 } else {
                     Task task = Parser.parseTask(input);
                     list.add(task);
