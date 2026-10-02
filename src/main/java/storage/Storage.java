@@ -16,6 +16,9 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Handles persistent storage of tasks to and from the local filesystem.
+ */
 public class Storage {
     private static final String DELIMITER_REGEX = " \\| ";
     private static final String TYPE_TODO = "T";
@@ -25,6 +28,11 @@ public class Storage {
 
     private final String filePath;
 
+    /**
+     * Constructs a Storage instance with automatic project root path resolution.
+     *
+     * @param relativePath The relative path of the file to save/load.
+     */
     public Storage(String relativePath) {
         Path userDirPath = Paths.get(System.getProperty("user.dir")).toAbsolutePath().normalize();
         
@@ -44,6 +52,11 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads saved tasks from the data file on disk.
+     *
+     * @return An ArrayList containing all valid tasks retrieved from disk.
+     */
     public ArrayList<Task> load() {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -112,6 +125,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Writes all tasks in the given TaskList to the storage file.
+     * Creates parent directories if they do not already exist.
+     *
+     * @param list The TaskList containing tasks to be saved.
+     */
     public void save(TaskList list) {
         File file = new File(filePath);
         File parentDir = file.getParentFile();

@@ -14,11 +14,21 @@ import task.Todo;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Handles interpretation and validation of user input commands and arguments.
+ */
 public class Parser {
     private static final String BY_FLAG = " /by";
     private static final String FROM_FLAG = " /from";
     private static final String TO_FLAG = " /to";
 
+    /**
+     * Parses the full user input string into its corresponding executable Command.
+     *
+     * @param input Raw command string from the user.
+     * @return The Command representing the parsed instruction.
+     * @throws AtlasException If the command keyword is unrecognized or arguments are malformed.
+     */
     public static Command parse(String input) throws AtlasException {
         String trimmed = input.trim();
         String[] parts = trimmed.split(" ", 2);
