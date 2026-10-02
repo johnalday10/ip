@@ -17,6 +17,10 @@ public class Atlas {
         this.list = new TaskList(storage.load());
     }
 
+    public static void main(String[] args) {
+        new Atlas().run();
+    }
+
     public void run() {
         ui.displayLine();
         ui.displayWelcomeBanner();
@@ -35,9 +39,5 @@ public class Atlas {
                 ui.displayLine();
             }
         }
-    }
-
-    public static void main(String[] args) {
-        new Atlas().run();
     }
 }

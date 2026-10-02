@@ -10,7 +10,7 @@ import task.Event;
     public class Ui {
     private static final String DIVIDER = "____________________________________________________________";
     private final Scanner scanner;
-    private static final String banner = "  ___  _____ _        _    ____  \n"
+    private static final String BANNER = "  ___  _____ _        _    ____  \n"
         + " / _ \\|_   _| |      / \\  / ___| \n"
         + "| |_| | | | | |     / _ \\ \\___ \\ \n"
         + "|  _  | | | | |___ / ___ \\ ___) |\n"
@@ -21,7 +21,7 @@ import task.Event;
     }
 
     public void displayWelcomeBanner() {
-        System.out.println(banner);
+        System.out.println(BANNER);
         System.out.println("Hello! I'm Atlas.");
         System.out.println("What can I do for you?");
     }
