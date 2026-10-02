@@ -78,6 +78,14 @@ import task.Event;
         displayLine();
     }
 
+    public void displayTaskDeleted(Task task, TaskList list) {
+        displayLine();
+        System.out.println("The tasks has been removed.");
+        System.out.println("   " + task);
+        System.out.println("There are " + list.size() + " tasks remaining in the list.");
+        displayLine();
+    }
+
     public void close() {
         scanner.close();
     }
