@@ -1,6 +1,6 @@
 package task;
 
-public class Task {
+public abstract class Task {
     private String description;
     private boolean isDone;
 
@@ -24,6 +24,12 @@ public class Task {
     public String getDescription() {
         return description;
     }
+
+    public boolean getIsDone() {
+        return this.isDone;
+    }
+
+    public abstract String toFileFormat();
 
     @Override
     public String toString() {
