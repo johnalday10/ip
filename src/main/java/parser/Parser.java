@@ -42,6 +42,8 @@ public class Parser {
             return new AddCommand(createDeadline(args));
         case "event":
             return new AddCommand(createEvent(args));
+        case "find":
+            return new command.FindCommand(args);
         default:
             throw new AtlasException("Unknown input, please try again");
         }

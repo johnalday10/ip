@@ -9,6 +9,7 @@ import task.Todo;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -25,7 +26,22 @@ public class Storage {
     private final String filePath;
 
     public Storage(String relativePath) {
-        this.filePath = Paths.get(relativePath).toString();
+        Path userDirPath = Paths.get(System.getProperty("user.dir")).toAbsolutePath().normalize();
+        
+        // If VS Code launches from inside src/main/java or src, find the project root containing build.gradle
+        Path rootPath = userDirPath;
+        while (rootPath != null && !rootPath.resolve("build.gradle").toFile().exists()) {
+            if (rootPath.getParent() == null) {
+                break;
+            }
+            rootPath = rootPath.getParent();
+        }
+
+        if (rootPath != null && rootPath.resolve("build.gradle").toFile().exists()) {
+            this.filePath = rootPath.resolve(relativePath).toString();
+        } else {
+            this.filePath = userDirPath.resolve(relativePath).toString();
+        }
     }
 
     public ArrayList<Task> load() {
