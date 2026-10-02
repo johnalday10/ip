@@ -1,32 +1,30 @@
 package storage;
 
-import task.Task;
-import task.Todo;
+import exception.AtlasException;
+import list.TaskList;
 import task.Deadline;
 import task.Event;
-import list.TaskList;
+import task.Task;
+import task.Todo;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
+    private static final String DELIMITER_REGEX = " \\| ";
+    private static final String TYPE_TODO = "T";
+    private static final String TYPE_DEADLINE = "D";
+    private static final String TYPE_EVENT = "E";
+    private static final String STATUS_DONE = "1";
+
     private final String filePath;
 
-    public Storage(String filePath) {
-        String userDir = System.getProperty("user.dir");
-        File current = new File(userDir);
-
-        String normalizedPath = userDir.replace("\\", "/");
-
-        if (normalizedPath.endsWith("src/main/java")) {
-            File projectRoot = current.getParentFile().getParentFile().getParentFile();
-            this.filePath = new File(projectRoot, filePath).getPath();
-        } else {
-            this.filePath = filePath;
-        }
+    public Storage(String relativePath) {
+        this.filePath = Paths.get(relativePath).toString();
     }
 
     public ArrayList<Task> load() {
@@ -56,41 +54,33 @@ public class Storage {
     }
 
     private Task parseLineToTask(String line) {
-        // Split by " | " with escaping for pipe regex
-        String[] parts = line.split(" \\| ");
+        String[] parts = line.split(DELIMITER_REGEX);
         if (parts.length < 3) {
             return null;
         }
 
         String type = parts[0].trim();
-        boolean isDone = parts[1].trim().equals("1");
+        boolean isDone = parts[1].trim().equals(STATUS_DONE);
         String description = parts[2].trim();
 
-        Task task;
-        switch (type) {
-        case "T":
-            task = new Todo(description);
-            break;
-        case "D":
-            if (parts.length < 4) {
-                return null;
-            }
-            task = new Deadline(description, parts[3].trim());
-            break;
-        case "E":
-            if (parts.length < 5) {
-                return null;
-            }
-            task = new Event(description, parts[3].trim(), parts[4].trim());
-            break;
-        default:
-            return null;
-        }
-
-        if (isDone) {
+        Task task = createTaskFromType(type, description, parts);
+        if (task != null && isDone) {
             task.markAsDone();
         }
         return task;
+    }
+
+    private Task createTaskFromType(String type, String description, String[] parts) {
+        switch (type) {
+        case TYPE_TODO:
+            return new Todo(description);
+        case TYPE_DEADLINE:
+            return parts.length >= 4 ? new Deadline(description, parts[3].trim()) : null;
+        case TYPE_EVENT:
+            return parts.length >= 5 ? new Event(description, parts[3].trim(), parts[4].trim()) : null;
+        default:
+            return null;
+        }
     }
 
     public void save(TaskList list) {

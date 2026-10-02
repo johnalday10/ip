@@ -12,6 +12,9 @@ import task.Event;
 import task.Todo;
 
 public class Parser {
+    private static final String BY_FLAG = " /by";
+    private static final String FROM_FLAG = " /from";
+    private static final String TO_FLAG = " /to";
 
     public static Command parse(String input) throws AtlasException {
         String trimmed = input.trim();
@@ -49,27 +52,31 @@ public class Parser {
     }
 
     private static Deadline createDeadline(String args) throws AtlasException {
-        String[] parts = args.split(" /by", 2);
-        if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-            throw new AtlasException("Invalid DEADLINE: Input requires description and start time");
-        }
+        String[] parts = splitArguments(args, BY_FLAG,
+                "Invalid DEADLINE: Input requires description and start time");
         return new Deadline(parts[0].trim(), parts[1].trim());
     }
 
     private static Event createEvent(String args) throws AtlasException {
-        String[] parts = args.split(" /from", 2);
-        String description = parts[0].trim();
+        String[] fromParts = splitArguments(args, FROM_FLAG,
+                "Invalid EVENT: Input requires description and start time");
+        String description = fromParts[0].trim();
 
-        if (parts.length < 2 || description.isEmpty()) {
-            throw new AtlasException("Invalid EVENT: Input requires description and start time");
+        String[] toParts = splitArguments(fromParts[1], TO_FLAG,
+                "Invalid EVENT: Input requires start and end time");
+        String from = toParts[0].trim();
+        String to = toParts[1].trim();
+
+        return new Event(description, from, to);
+    }
+
+    private static String[] splitArguments(String text, String delimiter, String errorMessage)
+            throws AtlasException {
+        String[] parts = text.split(delimiter, 2);
+        if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+            throw new AtlasException(errorMessage);
         }
-
-        String[] toFrom = parts[1].split(" /to", 2);
-        if (toFrom.length < 2 || toFrom[0].trim().isEmpty() || toFrom[1].trim().isEmpty()) {
-            throw new AtlasException("Invalid EVENT: Input requires start and end time");
-        }
-
-        return new Event(description, toFrom[0].trim(), toFrom[1].trim());
+        return parts;
     }
 
     private static int parseIndex(String args) throws AtlasException {
